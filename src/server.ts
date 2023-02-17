@@ -1,6 +1,5 @@
 import express from "express";
-import listEndpoints from "express-list-endpoints";
-import mongoose from "mongoose";
+import { createServer } from "http";
 import cors from "cors";
 import {
   badRequestHandler,
@@ -12,31 +11,23 @@ import {
 import usersRouter from "./api/users/index";
 import accommodationRouter from "./api/accommodation/index";
 
-const server = express();
-const port = process.env.PORT;
+const expressServer = express();
+
+const httpServer = createServer(expressServer);
 
 //middlewares
-server.use(cors());
-server.use(express.json());
+expressServer.use(cors());
+expressServer.use(express.json());
 
 // endpoints
-server.use("/users", usersRouter);
-server.use("/accommodation", accommodationRouter);
+expressServer.use("/users", usersRouter);
+expressServer.use("/accommodation", accommodationRouter);
 
 // error handlers
-server.use(badRequestHandler);
-server.use(unauthorizedHandler);
-server.use(forbiddenHandler);
-server.use(notFoundHandler);
-server.use(genericErrorHandler);
+expressServer.use(badRequestHandler);
+expressServer.use(unauthorizedHandler);
+expressServer.use(forbiddenHandler);
+expressServer.use(notFoundHandler);
+expressServer.use(genericErrorHandler);
 
-//db
-mongoose.connect(process.env.MONGO_URL!);
-
-mongoose.connection.on("connected", () => {
-  console.log("connected to MongoDB!");
-  server.listen(port, () => {
-    console.table(listEndpoints(server));
-    console.log(`server is running on port ${port}`);
-  });
-});
+export { httpServer, expressServer };

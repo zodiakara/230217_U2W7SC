@@ -1,6 +1,5 @@
 import createHttpError from "http-errors";
 import { RequestHandler, Request } from "express";
-import { ObjectId } from "mongoose";
 
 // we can extend a normal request which inherits all the req props plus the ones that we add in the interface:
 interface UserRequest extends Request {
