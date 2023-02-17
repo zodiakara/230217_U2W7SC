@@ -8,7 +8,7 @@ import {
   genericErrorHandler,
   unauthorizedHandler,
   forbiddenHandler,
-} from "./errorHandlers.js";
+} from "./errorHandlers";
 import usersRouter from "./api/users/index";
 import accommodationRouter from "./api/accommodation/index";
 

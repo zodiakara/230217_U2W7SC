@@ -1,8 +1,18 @@
 import createHttpError from "http-errors";
 import { verifyAccessToken } from "./tools";
 import { RequestHandler, Request } from "express";
+import { TokenPayload } from "./tools";
 
-export const JWTAuthMiddleware: RequestHandler = async (req, res, next) => {
+// we can extend a normal request which inferits all the req props plus the ones that we add in the interface :
+interface UserRequest extends Request {
+  user?: TokenPayload;
+}
+
+export const JWTAuthMiddleware: RequestHandler = async (
+  req: UserRequest,
+  res,
+  next
+) => {
   if (!req.headers.authorization) {
     next(
       createHttpError(
@@ -12,7 +22,7 @@ export const JWTAuthMiddleware: RequestHandler = async (req, res, next) => {
     );
   } else {
     try {
-      const accessToken = req.headers.authorization.replace("Bearer", "");
+      const accessToken = req.headers.authorization.replace("Bearer ", "");
       const payload = await verifyAccessToken(accessToken);
       req.user = {
         _id: payload._id,

@@ -1,9 +1,6 @@
 import express from "express";
 import { JWTAuthMiddleware } from "../../libraries/auth/JWTtools";
-import {
-  adminOrHostMiddleware,
-  hostOnlyMiddleware,
-} from "../../libraries/auth/middlewares";
+import { hostOnlyMiddleware } from "../../libraries/auth/middlewares";
 import AccommodationModel from "./model";
 
 const accommodationRouter = express.Router();
@@ -45,7 +42,6 @@ accommodationRouter.put(
 accommodationRouter.delete(
   "/me/:accommodationId",
   JWTAuthMiddleware,
-  adminOrHostMiddleware,
   async (req, res, next) => {
     try {
     } catch (error) {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "dev": "nodemon -r dotenv/config -e js ./src/index.ts",
+    "dev": "nodemon -r dotenv/config -e js ./src/server.ts",
     "build": "tsc"
   },
   "repository": {

@@ -1,6 +1,6 @@
 import express from "express";
 import { createAccessToken } from "../../libraries/auth/tools";
-import UsersModel from "./model.js";
+import UsersModel from "./model";
 import createHttpError from "http-errors";
 import { JWTAuthMiddleware } from "../../libraries/auth/JWTtools";
 import {
@@ -73,7 +73,7 @@ usersRouter.get(
 // //user profile - authenticated:
 // usersRouter.get("/me", JWTAuthMiddleware, async (req, res, next) => {
 //   try {
-//     const user = await UsersModel.findById(req.user._id);
+//     const user = await UsersModel.findOne({ id: req.user._id });
 //     if (user) {
 //       res.send(user);
 //     } else {
@@ -106,38 +106,21 @@ usersRouter.get(
 //   }
 // );
 
-usersRouter.put("/:userId", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    const updatedUser = await UsersModel.findByIdAndUpdate(
-      req.params.userId,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (updatedUser) {
-      res.send(updatedUser);
-    } else {
-      next(
-        createHttpError(404, `User with id ${req.params.userId} not found!`)
-      );
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-
-usersRouter.delete("/:userId", JWTAuthMiddleware, async (req, res, next) => {
-  try {
-    const deletedUser = await UsersModel.findByIdAndUpdate(req.params.userId);
-    if (deletedUser) {
-      res.status(204).send();
-    } else {
-      next(
-        createHttpError(404, `User with id ${req.params.userId} not found!`)
-      );
-    }
-  } catch (error) {
-    next(error);
-  }
-});
+// usersRouter.put("/:userId", JWTAuthMiddleware, async (req, res, next) => {
+//   try {
+//     const updatedUser = await UsersModel.findByIdAndUpdate(
+//       req.user._id,
+//       req.body,
+//       { new: true, runValidators: true }
+//     );
+//     if (updatedUser) {
+//       res.send(updatedUser);
+//     } else {
+//       next(createHttpError(404, `User with id ${req.user._id} not found!`));
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 export default usersRouter;
